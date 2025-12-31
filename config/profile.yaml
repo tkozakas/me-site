@@ -22,39 +22,6 @@ skills:
   - "AWS"
   - "Git"
 
-experience:
-  - company: "Visma"
-    role: "Junior Java Developer"
-    period: "Oct 2024 - Dec 2024"
-    description: "Developed API for data migration. Worked with IBM B2, WebSphere, Spring and Maven."
+experience: []
 
-  - company: "Zenitech"
-    role: "Software Engineer Intern"
-    period: "Jun 2024 - Aug 2024"
-    description: "Full-stack development with Java, Ruby on Rails, React. AWS infrastructure."
-
-  - company: "Visma"
-    role: "Java Developer Intern"
-    period: "Jun 2023 - Jul 2023"
-    description: "Microservice development. SQL and NoSQL databases."
-
-projects:
-  - name: "Expense Management"
-    description: "Spring Boot backend for expense tracking app"
-    url: "https://github.com/tkozakas/impensa-server-spring"
-    tech: ["Spring Boot", "Java", "PostgreSQL", "Docker"]
-
-  - name: "Telegram Bot"
-    description: "Interactive bot with memes, news, text-to-speech"
-    url: "https://github.com/tkozakas/telegram-bot"
-    tech: ["Spring Boot", "Java", "PostgreSQL"]
-
-  - name: "Unix Shell"
-    description: "Custom shell with job control and signal handling"
-    url: "https://github.com/tkozakas/shIl"
-    tech: ["C++", "CMake"]
-
-  - name: "8086 Disassembler"
-    description: "Translates machine code to assembly"
-    url: "https://github.com/tkozakas/8086-com-dissasembler"
-    tech: ["x86 Assembly"]
+projects: []
