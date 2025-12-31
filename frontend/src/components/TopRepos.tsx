@@ -14,7 +14,7 @@ export function TopRepos({ repositories }: TopReposProps) {
         {repositories.slice(0, 6).map((repo) => (
           <a
             key={repo.name}
-            href={repo.url}
+            href={repo.html_url}
             target="_blank"
             rel="noopener noreferrer"
             className="group rounded-lg border border-neutral-800 p-4 transition-all hover:border-neutral-700 hover:bg-neutral-800/50"
@@ -36,10 +36,10 @@ export function TopRepos({ repositories }: TopReposProps) {
             )}
             <div className="mt-3 flex gap-4 text-xs text-neutral-500">
               <span className="flex items-center gap-1">
-                <span>★</span> {repo.stars}
+                <span>★</span> {repo.stargazers_count}
               </span>
               <span className="flex items-center gap-1">
-                <span></span> {repo.forks}
+                <span></span> {repo.forks_count}
               </span>
             </div>
           </a>

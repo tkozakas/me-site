@@ -4,3 +4,6 @@ export { TopRepos } from "./TopRepos";
 export { Languages } from "./Languages";
 export { RecentCommits } from "./RecentCommits";
 export { StreakStats } from "./StreakStats";
+export { SearchBar } from "./SearchBar";
+export { SearchResults } from "./SearchResults";
+export { Dashboard } from "./Dashboard";

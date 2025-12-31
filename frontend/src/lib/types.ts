@@ -1,35 +1,37 @@
 export interface GitHubProfile {
   login: string;
   name: string;
-  avatarUrl: string;
+  avatar_url: string;
   bio: string;
   location: string;
   company: string;
   blog: string;
   followers: number;
   following: number;
-  publicRepos: number;
-  createdAt: string;
+  public_repos: number;
+  created_at: string;
 }
 
 export interface Repository {
   name: string;
   description: string;
-  url: string;
-  stars: number;
-  forks: number;
+  html_url: string;
+  stargazers_count: number;
+  forks_count: number;
   language: string;
-  updatedAt: string;
-  isArchived: boolean;
-  isFork: boolean;
+  updated_at: string;
+  archived: boolean;
+  fork: boolean;
 }
 
 export interface Commit {
   sha: string;
   message: string;
-  repo: string;
+  author: string;
+  email: string;
   date: string;
   url: string;
+  repo: string;
 }
 
 export interface ContributionDay {
@@ -54,11 +56,17 @@ export interface StreakStats {
   totalContributions: number;
 }
 
-export interface GitHubData {
+export interface GitHubStats {
   profile: GitHubProfile;
   repositories: Repository[];
-  recentCommits: Commit[];
   contributions: ContributionWeek[];
   languages: LanguageStats[];
   streak: StreakStats;
+  updatedAt: string;
+}
+
+export interface SearchResult {
+  query: string;
+  count: number;
+  results: Commit[];
 }

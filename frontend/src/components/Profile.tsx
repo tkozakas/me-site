@@ -9,14 +9,16 @@ export function Profile({ profile }: ProfileProps) {
   return (
     <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
       <Image
-        src={profile.avatarUrl}
-        alt={profile.name}
+        src={profile.avatar_url}
+        alt={profile.name || profile.login}
         width={128}
         height={128}
         className="rounded-full border-2 border-neutral-800"
       />
       <div className="text-center sm:text-left">
-        <h1 className="text-3xl font-bold text-neutral-100">{profile.name}</h1>
+        <h1 className="text-3xl font-bold text-neutral-100">
+          {profile.name || profile.login}
+        </h1>
         <p className="text-lg text-neutral-400">@{profile.login}</p>
         {profile.bio && (
           <p className="mt-2 max-w-md text-neutral-300">{profile.bio}</p>
@@ -62,7 +64,7 @@ export function Profile({ profile }: ProfileProps) {
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-neutral-100">
-              {profile.publicRepos}
+              {profile.public_repos}
             </div>
             <div className="text-xs text-neutral-500">repos</div>
           </div>
