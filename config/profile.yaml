@@ -1,0 +1,47 @@
+# Your Profile Configuration
+# Edit this file to customize your personal website
+
+name: "Your Name"
+title: "Software Engineer"
+bio: "A brief description about yourself. What you do, what you're passionate about."
+
+location: "San Francisco, CA"
+email: "you@example.com"
+
+# Social links - leave empty or remove if not needed
+social:
+  github: "yourusername"
+  linkedin: "yourusername"
+  twitter: "yourusername"
+  website: ""
+
+# Skills/Technologies you work with
+skills:
+  - "TypeScript"
+  - "Go"
+  - "React"
+  - "Node.js"
+  - "PostgreSQL"
+  - "Docker"
+
+# Work experience (optional)
+experience:
+  - company: "Company Name"
+    role: "Senior Engineer"
+    period: "2022 - Present"
+    description: "Brief description of what you do/did"
+  - company: "Previous Company"
+    role: "Software Engineer"
+    period: "2020 - 2022"
+    description: "Brief description"
+
+# Projects to showcase (optional)
+projects:
+  - name: "Project Name"
+    description: "What does this project do"
+    url: "https://github.com/you/project"
+    tech: ["TypeScript", "React"]
+  - name: "Another Project"
+    description: "Description here"
+    url: "https://github.com/you/another"
+    tech: ["Go", "PostgreSQL"]

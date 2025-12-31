@@ -1,0 +1,37 @@
+# Dotfiles Configuration
+# Showcase your development environment setup
+
+# Enable/disable dotfiles section
+enabled: true
+
+# Your dotfiles repository (for linking)
+repository: "https://github.com/yourusername/dotfiles"
+
+# Tools and their config files to showcase
+tools:
+  - name: "Neovim"
+    icon: "vim"
+    description: "My Neovim configuration with LSP, Treesitter, and custom keybindings"
+    configPath: "nvim/init.lua"
+
+  - name: "Tmux"
+    icon: "terminal"
+    description: "Terminal multiplexer setup with custom theme and bindings"
+    configPath: "tmux/.tmux.conf"
+
+  - name: "Zsh"
+    icon: "terminal"
+    description: "Shell configuration with Oh My Zsh and custom aliases"
+    configPath: "zsh/.zshrc"
+
+  - name: "Git"
+    icon: "git"
+    description: "Git configuration with useful aliases"
+    configPath: "git/.gitconfig"
+
+# Terminal setup
+terminal:
+  emulator: "Kitty"
+  shell: "Zsh"
+  theme: "Catppuccin"
+  font: "JetBrains Mono"
