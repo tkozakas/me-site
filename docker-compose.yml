@@ -1,6 +1,6 @@
 x-backend: &backend
-  ports:
-    - "8080:8080"
+  expose:
+    - "8080"
   environment:
     - GITHUB_TOKEN=${GITHUB_TOKEN}
     - GITHUB_USERNAME=${GITHUB_USERNAME:-tkozakas}
@@ -15,8 +15,8 @@ x-backend: &backend
     start_period: 5s
 
 x-frontend: &frontend
-  ports:
-    - "3000:80"
+  expose:
+    - "80"
   restart: unless-stopped
 
 services:
@@ -69,7 +69,7 @@ services:
     restart: unless-stopped
 
   tunnel:
-    profiles: ["prod"]
+    profiles: ["tunnel"]
     image: cloudflare/cloudflared:latest
     command: tunnel run
     environment:
@@ -78,3 +78,22 @@ services:
     depends_on:
       - frontend-prod
       - backend-prod
+
+  caddy:
+    profiles: ["prod"]
+    image: caddy:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    environment:
+      - DOMAIN=${DOMAIN:-localhost}
+    depends_on:
+      - frontend-prod
+      - backend-prod
+    restart: unless-stopped
+
+volumes:
+  caddy_data:

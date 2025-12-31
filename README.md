@@ -1,6 +1,6 @@
 # me-site
 
-Personal GitHub stats dashboard with live updates and semantic commit search.
+Personal GitHub stats dashboard.
 
 ## Features
 
@@ -12,15 +12,12 @@ Personal GitHub stats dashboard with live updates and semantic commit search.
 ## Run
 
 ```bash
-export GITHUB_TOKEN=xxx
+# Development
+GITHUB_TOKEN=xxx docker compose --profile dev up --build
 
-# Development (build from source)
-docker compose --profile dev up --build
-
-# Production (pre-built images, auto-updates)
-docker login ghcr.io -u tkozakas
-docker compose --profile prod up -d
+# Production
+GITHUB_TOKEN=xxx DOMAIN=example.com docker compose --profile prod up -d
 ```
 
 Frontend: http://localhost:3000  
-Backend API: http://localhost:8080
+Backend: http://localhost:8080
