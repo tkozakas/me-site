@@ -12,24 +12,13 @@ Personal GitHub stats dashboard with live updates and semantic commit search.
 ## Run
 
 ```bash
-# Create .env
-echo "GITHUB_TOKEN=your_token" > .env
-
 # Development (build from source)
-docker compose --profile dev up --build
+GITHUB_TOKEN=xxx docker compose --profile dev up --build
 
 # Production (pre-built images, auto-updates)
 docker login ghcr.io -u tkozakas
-docker compose --profile prod up -d
+GITHUB_TOKEN=xxx docker compose --profile prod up -d
 ```
 
 Frontend: http://localhost:3000  
 Backend API: http://localhost:8080
-
-## Environment
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `GITHUB_TOKEN` | Yes | GitHub personal access token |
-| `GITHUB_USERNAME` | No | Username to fetch (default: tkozakas) |
-| `WEBHOOK_SECRET` | No | For GitHub webhook verification |
