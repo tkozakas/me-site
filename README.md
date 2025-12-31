@@ -1,75 +1,24 @@
 # me-site
 
-A minimal, customizable personal website template. Clone it, edit the config files, and deploy.
+Minimal personal website. Edit YAML, deploy.
 
-## Quick Start
+## Setup
 
 ```bash
-# Clone the repository
 git clone https://github.com/YOUR_USERNAME/me-site.git
 cd me-site
-
-# Install dependencies
 npm install
-
-# Start development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see your site.
+## Customize
 
-## Customization
+Edit `config/profile.yaml` (your info) and `config/dotfiles.yaml` (dev setup).
 
-Edit these files in the `config/` directory:
+## Deploy
 
-### `config/profile.yaml`
+**GitHub Pages**: Settings → Pages → Source → GitHub Actions. Deploys on push.
 
-Your personal information: name, bio, social links, skills, experience, and projects.
+**Docker**: `docker build -t me-site . && docker run -p 80:80 me-site`
 
-### `config/dotfiles.yaml`
-
-Your development environment setup: terminal, shell, editor configs, and dotfiles repository link.
-
-## Deployment
-
-### GitHub Pages (Recommended)
-
-1. Fork this repository
-2. Go to Settings → Pages → Source → GitHub Actions
-3. Push to `main` branch - the site deploys automatically
-4. Access at `https://YOUR_USERNAME.github.io/me-site`
-
-**Custom Domain**: Add your domain in Settings → Pages, then update `next.config.ts` if needed.
-
-### Other Platforms
-
-The site exports to static HTML. Run `npm run build` and deploy the `out/` directory to any static host (Vercel, Netlify, Cloudflare Pages).
-
-## Development
-
-```bash
-npm run dev          # Start dev server
-npm run build        # Build for production
-npm run lint         # Run ESLint
-npm run typecheck    # Run TypeScript checks
-npm run format       # Format with Prettier
-```
-
-## Structure
-
-```
-me-site/
-├── config/              # Your customization files
-│   ├── profile.yaml     # Personal info
-│   └── dotfiles.yaml    # Dev environment config
-├── src/
-│   ├── app/             # Next.js app router
-│   ├── components/      # React components
-│   └── lib/             # Utilities and types
-├── .github/workflows/   # CI and deployment
-└── public/              # Static assets
-```
-
-## License
-
-MIT
+**Other**: `npm run build` → deploy `out/` folder.
