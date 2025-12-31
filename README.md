@@ -1,6 +1,15 @@
 # me-site
 
-Minimal personal website. Edit YAML, deploy.
+Personal GitHub stats dashboard. Fetches data via `gh` CLI at build time.
+
+## Features
+
+- Profile overview (avatar, bio, followers, repos)
+- Contribution graph (GitHub-style heatmap)
+- Streak stats (current, longest, total contributions)
+- Top repositories
+- Language breakdown
+- Recent activity
 
 ## Setup
 
@@ -11,6 +20,10 @@ npm install
 npm run dev
 ```
 
-## Customize
+Requires `gh` CLI authenticated locally.
 
-Edit `config/profile.yaml` (your info) and `config/dotfiles.yaml` (dev setup).
+## Deploy
+
+Deploys to GitHub Pages via Actions. The workflow uses `github.token` for API access.
+
+Live: https://tkozakas.github.io/me-site
