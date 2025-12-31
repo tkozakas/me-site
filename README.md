@@ -14,11 +14,3 @@ npm run dev
 ## Customize
 
 Edit `config/profile.yaml` (your info) and `config/dotfiles.yaml` (dev setup).
-
-## Deploy
-
-**GitHub Pages**: Settings → Pages → Source → GitHub Actions. Deploys on push.
-
-**Docker**: `docker build -t me-site . && docker run -p 80:80 me-site`
-
-**Other**: `npm run build` → deploy `out/` folder.
