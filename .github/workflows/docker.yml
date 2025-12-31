@@ -38,8 +38,10 @@ jobs:
       - uses: docker/build-push-action@v6
         with:
           context: ./backend
+          platforms: ${{ matrix.platform }}
           push: true
           tags: ${{ env.REGISTRY }}/${{ github.repository }}-backend:${{ matrix.tag }}
+          provenance: false
 
   build-frontend:
     name: Frontend (${{ matrix.platform }})
@@ -70,10 +72,12 @@ jobs:
       - uses: docker/build-push-action@v6
         with:
           context: ./frontend
+          platforms: ${{ matrix.platform }}
           push: true
           tags: ${{ env.REGISTRY }}/${{ github.repository }}-frontend:${{ matrix.tag }}
           build-args: |
             NEXT_PUBLIC_API_URL=/api
+          provenance: false
 
   manifest-backend:
     name: Backend Manifest
