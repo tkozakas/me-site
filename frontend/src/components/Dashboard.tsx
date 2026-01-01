@@ -67,6 +67,10 @@ export function Dashboard({ username }: DashboardProps) {
       );
       setStats(data);
       setError(null);
+
+      if (selectedLanguage && !data.languages.some(l => l.name === selectedLanguage)) {
+        setSelectedLanguage(null);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load data");
     } finally {
