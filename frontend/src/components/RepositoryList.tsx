@@ -10,6 +10,28 @@ interface RepositoryListProps {
   visibility?: "public" | "private" | "all";
 }
 
+function RepositoryListSkeleton() {
+  return (
+    <div className="space-y-2">
+      {[0, 1, 2, 3, 4].map((i) => (
+        <div
+          key={i}
+          className="rounded-lg border border-neutral-800 p-3"
+        >
+          <div className="flex items-start justify-between">
+            <div className="h-5 w-40 animate-pulse rounded bg-neutral-800" style={{ animationDelay: `${i * 60}ms` }} />
+            <div className="flex items-center gap-2">
+              <div className="h-5 w-16 animate-pulse rounded bg-neutral-800" style={{ animationDelay: `${i * 60 + 30}ms` }} />
+              <div className="h-4 w-10 animate-pulse rounded bg-neutral-800" style={{ animationDelay: `${i * 60 + 60}ms` }} />
+            </div>
+          </div>
+          <div className="mt-2 h-4 w-3/4 animate-pulse rounded bg-neutral-800" style={{ animationDelay: `${i * 60 + 90}ms` }} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function RepositoryList({ username, visibility = "public" }: RepositoryListProps) {
   const [repos, setRepos] = useState<Repository[]>([]);
   const [loading, setLoading] = useState(true);
@@ -51,9 +73,7 @@ export function RepositoryList({ username, visibility = "public" }: RepositoryLi
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center py-8">
-          <div className="h-6 w-6 animate-spin rounded-full border-2 border-neutral-600 border-t-neutral-300" />
-        </div>
+        <RepositoryListSkeleton />
       ) : (
         <div className="max-h-96 space-y-2 overflow-y-auto">
           {repos.map((repo) => (

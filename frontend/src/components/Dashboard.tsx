@@ -30,17 +30,125 @@ function extractCountryFromLocation(location: string): string | null {
   return parts[0] || null;
 }
 
+function StreakStatsSkeleton() {
+  return (
+    <div className="grid gap-4 sm:grid-cols-3">
+      {[0, 1, 2].map((i) => (
+        <div key={i} className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6 text-center">
+          <div className="mx-auto h-10 w-16 animate-pulse rounded bg-neutral-800" style={{ animationDelay: `${i * 100}ms` }} />
+          <div className="mx-auto mt-2 h-4 w-24 animate-pulse rounded bg-neutral-800" style={{ animationDelay: `${i * 100 + 50}ms` }} />
+          <div className="mx-auto mt-1 h-3 w-12 animate-pulse rounded bg-neutral-800" style={{ animationDelay: `${i * 100 + 100}ms` }} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function LanguagesSkeleton() {
+  return (
+    <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6">
+      <div className="mb-4 h-6 w-24 animate-pulse rounded bg-neutral-800" />
+      <div className="mb-4 flex h-4 gap-0.5 overflow-hidden rounded-full">
+        {[40, 25, 20, 10, 5].map((w, i) => (
+          <div
+            key={i}
+            className="h-full animate-pulse rounded-full bg-neutral-700"
+            style={{ width: `${w}%`, animationDelay: `${i * 80}ms` }}
+          />
+        ))}
+      </div>
+      <div className="flex flex-wrap gap-4">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="flex items-center gap-2" style={{ animationDelay: `${i * 60}ms` }}>
+            <div className="h-3 w-3 animate-pulse rounded-full bg-neutral-700" />
+            <div className="h-4 w-16 animate-pulse rounded bg-neutral-800" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ContributionGraphSkeleton() {
+  return (
+    <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6">
+      <div className="mb-4 h-6 w-44 animate-pulse rounded bg-neutral-800" />
+      <div className="overflow-x-auto">
+        <div className="flex gap-1">
+          {Array.from({ length: 52 }).map((_, weekIndex) => (
+            <div key={weekIndex} className="flex flex-col gap-1">
+              {Array.from({ length: 7 }).map((_, dayIndex) => (
+                <div
+                  key={dayIndex}
+                  className="h-3 w-3 animate-pulse rounded-sm bg-neutral-800"
+                  style={{ animationDelay: `${(weekIndex * 7 + dayIndex) * 2}ms` }}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="mt-4 flex items-center justify-end gap-2 text-xs text-neutral-500">
+        <span>Less</span>
+        {[0, 1, 2, 3, 4].map((i) => (
+          <div key={i} className="h-3 w-3 animate-pulse rounded-sm bg-neutral-800" style={{ animationDelay: `${i * 50}ms` }} />
+        ))}
+        <span>More</span>
+      </div>
+    </div>
+  );
+}
+
+function TopReposSkeleton() {
+  return (
+    <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6">
+      <div className="mb-4 h-6 w-36 animate-pulse rounded bg-neutral-800" />
+      <div className="grid gap-4 sm:grid-cols-2">
+        {[0, 1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="rounded-lg border border-neutral-800 p-4" style={{ animationDelay: `${i * 50}ms` }}>
+            <div className="flex items-start justify-between">
+              <div className="h-5 w-32 animate-pulse rounded bg-neutral-800" style={{ animationDelay: `${i * 50}ms` }} />
+              <div className="h-5 w-16 animate-pulse rounded bg-neutral-800" style={{ animationDelay: `${i * 50 + 25}ms` }} />
+            </div>
+            <div className="mt-2 h-4 w-full animate-pulse rounded bg-neutral-800" style={{ animationDelay: `${i * 50 + 50}ms` }} />
+            <div className="mt-3 flex gap-4">
+              <div className="h-3 w-10 animate-pulse rounded bg-neutral-800" />
+              <div className="h-3 w-10 animate-pulse rounded bg-neutral-800" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ProfileSkeleton() {
+  return (
+    <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start animate-pulse">
+      <div className="h-32 w-32 rounded-full bg-neutral-800" />
+      <div className="text-center sm:text-left flex-1">
+        <div className="h-8 w-48 bg-neutral-800 rounded mb-2" />
+        <div className="h-5 w-32 bg-neutral-800 rounded mb-4" />
+        <div className="h-4 w-64 bg-neutral-800 rounded mb-4" />
+        <div className="flex gap-6 justify-center sm:justify-start">
+          <div className="h-12 w-16 bg-neutral-800 rounded" />
+          <div className="h-12 w-16 bg-neutral-800 rounded" />
+          <div className="h-12 w-16 bg-neutral-800 rounded" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function Dashboard({ username }: DashboardProps) {
   const [stats, setStats] = useState<GitHubStats | null>(null);
   const [ranking, setRanking] = useState<UserRanking | null>(null);
   const [loading, setLoading] = useState(true);
-  const [refetching, setRefetching] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
   const [visibility, setVisibility] = useState<Visibility>("public");
   const [modal, setModal] = useState<"followers" | "following" | null>(null);
   const reposRef = useRef<HTMLDivElement>(null);
-  const hasLoadedRef = useRef(false);
   const { auth, login, logout } = useAuth();
   const router = useRouter();
 
@@ -56,11 +164,7 @@ export function Dashboard({ username }: DashboardProps) {
 
   const fetchStats = useCallback(async () => {
     try {
-      if (hasLoadedRef.current) {
-        setRefetching(true);
-      } else {
-        setLoading(true);
-      }
+      setLoading(true);
       const data = await getUserStats(
         username,
         selectedLanguage ?? undefined,
@@ -68,7 +172,6 @@ export function Dashboard({ username }: DashboardProps) {
       );
       setStats(data);
       setError(null);
-      hasLoadedRef.current = true;
 
       if (selectedLanguage && !data.languages.some(l => l.name === selectedLanguage)) {
         setSelectedLanguage(null);
@@ -77,7 +180,6 @@ export function Dashboard({ username }: DashboardProps) {
       setError(err instanceof Error ? err.message : "Failed to load data");
     } finally {
       setLoading(false);
-      setRefetching(false);
     }
   }, [username, selectedLanguage, visibility, isOwnProfile]);
 
@@ -100,45 +202,6 @@ export function Dashboard({ username }: DashboardProps) {
       .catch(() => {});
   }, [username, stats?.profile.location]);
 
-  if (loading && !stats) {
-    return (
-      <main className="min-h-screen bg-neutral-950">
-        <div className="mx-auto max-w-6xl px-6 py-16">
-          <div className="flex items-center justify-center py-20">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-neutral-600 border-t-neutral-300" />
-          </div>
-        </div>
-      </main>
-    );
-  }
-
-  if (error && !stats) {
-    return (
-      <main className="min-h-screen bg-neutral-950">
-        <div className="mx-auto max-w-6xl px-6 py-16">
-          <Header
-            auth={auth}
-            login={login}
-            logout={logout}
-            onBack={() => router.push("/")}
-            onProfile={() => auth.username && router.push(`/${auth.username}`)}
-          />
-          <div className="rounded-xl border border-red-900 bg-red-950/50 p-6 text-center">
-            <p className="text-red-400">{error}</p>
-            <button
-              onClick={fetchStats}
-              className="mt-4 rounded-lg bg-neutral-800 px-4 py-2 text-sm text-neutral-200 hover:bg-neutral-700"
-            >
-              Retry
-            </button>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
-  if (!stats) return null;
-
   return (
     <main className="min-h-screen bg-neutral-950">
       <div className="mx-auto max-w-6xl px-6 py-16">
@@ -153,93 +216,140 @@ export function Dashboard({ username }: DashboardProps) {
           onVisibilityChange={isOwnProfile ? setVisibility : undefined}
         />
 
-        {refetching && (
-          <div className="mb-4 flex items-center justify-center gap-2 rounded-lg bg-neutral-800/50 py-2 text-sm text-neutral-400">
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-neutral-600 border-t-neutral-300" />
-            Updating...
+        {error ? (
+          <div className="rounded-xl border border-red-900 bg-red-950/50 p-6 text-center">
+            <p className="text-red-400">{error}</p>
+            <button
+              onClick={fetchStats}
+              className="mt-4 rounded-lg bg-neutral-800 px-4 py-2 text-sm text-neutral-200 hover:bg-neutral-700"
+            >
+              Retry
+            </button>
           </div>
-        )}
+        ) : (
+          <>
+            {loading && !stats ? (
+              <ProfileSkeleton />
+            ) : stats ? (
+              <Profile 
+                profile={stats.profile} 
+                ranking={ranking}
+                onFollowersClick={() => setModal("followers")}
+                onFollowingClick={() => setModal("following")}
+                onReposClick={() => reposRef.current?.scrollIntoView({ behavior: "smooth" })}
+              />
+            ) : null}
 
-        <Profile 
-          profile={stats.profile} 
-          ranking={ranking}
-          onFollowersClick={() => setModal("followers")}
-          onFollowingClick={() => setModal("following")}
-          onReposClick={() => reposRef.current?.scrollIntoView({ behavior: "smooth" })}
-        />
+            {modal && (
+              <UserListModal
+                username={username}
+                type={modal}
+                onClose={() => setModal(null)}
+              />
+            )}
 
-        {modal && (
-          <UserListModal
-            username={username}
-            type={modal}
-            onClose={() => setModal(null)}
-          />
-        )}
+            {!auth.authenticated && !loading && (
+              <LoginBanner login={login} />
+            )}
 
-        {!auth.authenticated && (
-          <LoginBanner login={login} />
-        )}
+            <div className="mt-12 space-y-8">
+              {loading && !stats ? (
+                <StreakStatsSkeleton />
+              ) : stats ? (
+                <StreakStats streak={stats.streak} />
+              ) : null}
 
-        <div className="mt-12 space-y-8">
-          <StreakStats streak={stats.streak} />
-          <FunStats username={username} visibility={isOwnProfile ? visibility : "public"} />
-          <ContributionGraph contributions={stats.contributions} />
+              <FunStats username={username} visibility={isOwnProfile ? visibility : "public"} />
 
-          <div className="grid gap-8 lg:grid-cols-2">
-            <Languages
-              languages={stats.languages}
-              selectedLanguage={selectedLanguage}
-              onLanguageClick={setSelectedLanguage}
-            />
-            <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6">
-              <h2 className="mb-4 text-lg font-semibold text-neutral-200">
-                Stats
-              </h2>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-neutral-400">Repositories shown</span>
-                  <span className="text-neutral-200">
-                    {stats.repositories.length}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-neutral-400">Last updated</span>
-                  <span className="text-neutral-200">
-                    {new Date(stats.updatedAt).toLocaleString()}
-                  </span>
-                </div>
-                {selectedLanguage && (
-                  <div className="flex justify-between">
-                    <span className="text-neutral-400">Filtered by</span>
-                    <span className="text-neutral-200">{selectedLanguage}</span>
-                  </div>
-                )}
-                {isOwnProfile && (
-                  <div className="flex justify-between">
-                    <span className="text-neutral-400">Visibility</span>
-                    <span className="text-emerald-400 capitalize">{visibility}</span>
-                  </div>
-                )}
+              {loading && !stats ? (
+                <ContributionGraphSkeleton />
+              ) : stats ? (
+                <ContributionGraph contributions={stats.contributions} loading={loading} />
+              ) : null}
+
+              <div className="grid gap-8 lg:grid-cols-2">
+                {loading && !stats ? (
+                  <>
+                    <LanguagesSkeleton />
+                    <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6">
+                      <div className="mb-4 h-6 w-16 animate-pulse rounded bg-neutral-800" />
+                      <div className="space-y-3">
+                        {[1, 2, 3, 4].map((i) => (
+                          <div key={i} className="flex justify-between" style={{ animationDelay: `${i * 60}ms` }}>
+                            <div className="h-4 w-32 animate-pulse rounded bg-neutral-800" />
+                            <div className="h-4 w-16 animate-pulse rounded bg-neutral-800" />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                ) : stats ? (
+                  <>
+                    <Languages
+                      languages={stats.languages}
+                      selectedLanguage={selectedLanguage}
+                      onLanguageClick={setSelectedLanguage}
+                    />
+                    <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6">
+                      <h2 className="mb-4 text-lg font-semibold text-neutral-200">
+                        Stats
+                      </h2>
+                      <div className="space-y-3 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-neutral-400">Repositories shown</span>
+                          <span className="text-neutral-200">
+                            {stats.repositories.length}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-neutral-400">Last updated</span>
+                          <span className="text-neutral-200">
+                            {new Date(stats.updatedAt).toLocaleString()}
+                          </span>
+                        </div>
+                        {selectedLanguage && (
+                          <div className="flex justify-between">
+                            <span className="text-neutral-400">Filtered by</span>
+                            <span className="text-neutral-200">{selectedLanguage}</span>
+                          </div>
+                        )}
+                        {isOwnProfile && (
+                          <div className="flex justify-between">
+                            <span className="text-neutral-400">Visibility</span>
+                            <span className="text-emerald-400 capitalize">{visibility}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </>
+                ) : null}
+              </div>
+
+              {loading && !stats ? (
+                <TopReposSkeleton />
+              ) : stats ? (
+                <TopRepos repositories={stats.repositories} />
+              ) : null}
+
+              <div ref={reposRef}>
+                <RepositoryList username={username} visibility={isOwnProfile ? visibility : "public"} />
               </div>
             </div>
-          </div>
 
-          <TopRepos repositories={stats.repositories} />
-          <div ref={reposRef}>
-            <RepositoryList username={username} visibility={isOwnProfile ? visibility : "public"} />
-          </div>
-        </div>
-
-        <footer className="mt-20 border-t border-neutral-900 pt-8 text-center text-sm text-neutral-600">
-          <a
-            href={`https://github.com/${stats.profile.login}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition-colors hover:text-neutral-400"
-          >
-            @{stats.profile.login}
-          </a>
-        </footer>
+            {stats && (
+              <footer className="mt-20 border-t border-neutral-900 pt-8 text-center text-sm text-neutral-600">
+                <a
+                  href={`https://github.com/${stats.profile.login}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-neutral-400"
+                >
+                  @{stats.profile.login}
+                </a>
+              </footer>
+            )}
+          </>
+        )}
       </div>
     </main>
   );

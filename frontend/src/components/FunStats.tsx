@@ -9,6 +9,72 @@ interface FunStatsProps {
   visibility?: "public" | "private" | "all";
 }
 
+function FunStatsSkeleton() {
+  return (
+    <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6">
+      <div className="mb-6 h-6 w-32 animate-pulse rounded bg-neutral-800" />
+      
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {[0, 1, 2, 3].map((i) => (
+          <div key={i} className="rounded-lg border border-neutral-800 bg-neutral-800/30 p-4">
+            <div className="h-8 w-20 animate-pulse rounded bg-neutral-700" style={{ animationDelay: `${i * 80}ms` }} />
+            <div className="mt-2 h-4 w-28 animate-pulse rounded bg-neutral-800" style={{ animationDelay: `${i * 80 + 40}ms` }} />
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-8 grid gap-6 lg:grid-cols-2">
+        <div>
+          <div className="mb-3 h-4 w-28 animate-pulse rounded bg-neutral-800" />
+          <div className="flex h-24 items-end gap-0.5">
+            {Array.from({ length: 24 }).map((_, i) => (
+              <div
+                key={i}
+                className="flex-1 animate-pulse rounded-t bg-neutral-700"
+                style={{
+                  height: `${20 + Math.random() * 60}%`,
+                  animationDelay: `${i * 30}ms`,
+                }}
+              />
+            ))}
+          </div>
+        </div>
+        
+        <div>
+          <div className="mb-3 h-4 w-24 animate-pulse rounded bg-neutral-800" />
+          <div className="space-y-2">
+            {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="flex items-center gap-2">
+                <div className="h-4 w-12 animate-pulse rounded bg-neutral-800" style={{ animationDelay: `${i * 50}ms` }} />
+                <div className="flex-1 h-4 rounded bg-neutral-800">
+                  <div
+                    className="h-full animate-pulse rounded bg-neutral-700"
+                    style={{
+                      width: `${30 + Math.random() * 50}%`,
+                      animationDelay: `${i * 50 + 25}ms`,
+                    }}
+                  />
+                </div>
+                <div className="h-4 w-8 animate-pulse rounded bg-neutral-800" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-8 grid gap-4 sm:grid-cols-3">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="rounded-lg border border-neutral-800 bg-neutral-800/30 p-4">
+            <div className="h-4 w-24 animate-pulse rounded bg-neutral-800" style={{ animationDelay: `${i * 70}ms` }} />
+            <div className="mt-2 h-2 w-full animate-pulse rounded-full bg-neutral-700" style={{ animationDelay: `${i * 70 + 35}ms` }} />
+            <div className="mt-1 ml-auto h-4 w-12 animate-pulse rounded bg-neutral-800" style={{ animationDelay: `${i * 70 + 70}ms` }} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function FunStats({ username, visibility = "public" }: FunStatsProps) {
   const [stats, setStats] = useState<FunStatsType | null>(null);
   const [loading, setLoading] = useState(true);
@@ -22,13 +88,7 @@ export function FunStats({ username, visibility = "public" }: FunStatsProps) {
   }, [username, visibility]);
 
   if (loading) {
-    return (
-      <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6">
-        <div className="flex items-center justify-center py-8">
-          <div className="h-6 w-6 animate-spin rounded-full border-2 border-neutral-600 border-t-neutral-300" />
-        </div>
-      </div>
-    );
+    return <FunStatsSkeleton />;
   }
 
   if (!stats) return null;
