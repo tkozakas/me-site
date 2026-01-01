@@ -2,7 +2,7 @@
 
 GitHub stats dashboard. [ghstats.fun](https://ghstats.fun)
 
-![Preview](demo.png)
+![Preview](./demo.png)
 
 ## Setup
 
