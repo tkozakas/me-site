@@ -6,17 +6,20 @@ Personal GitHub stats dashboard.
 
 - Profile, contributions graph, streak stats
 - Top repositories with language filtering
-- Semantic commit search
-- Auto-updates via GitHub webhooks
+- Commit search
 
 ## Run
 
 ```bash
+# Get token: https://github.com/settings/tokens (read:user scope)
+export GITHUB_TOKEN=xxx
+
 # Development
-GITHUB_TOKEN=xxx docker compose --profile dev up --build
+docker compose --profile dev up --build
 
 # Production
-GITHUB_TOKEN=xxx DOMAIN=example.com docker compose --profile prod up -d
+export DOMAIN=example.com
+docker compose --profile prod up -d
 ```
 
 Frontend: http://localhost:3000

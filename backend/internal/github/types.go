@@ -68,3 +68,30 @@ type Stats struct {
 	Streak        StreakStats        `json:"streak"`
 	UpdatedAt     time.Time          `json:"updatedAt"`
 }
+
+type RepoStats struct {
+	Repository    Repository     `json:"repository"`
+	Commits       []Commit       `json:"commits"`
+	TotalCommits  int            `json:"totalCommits"`
+	FirstCommit   time.Time      `json:"firstCommit"`
+	LastCommit    time.Time      `json:"lastCommit"`
+	CommitsByDay  map[string]int `json:"commitsByDay"`
+	CommitsByHour map[int]int    `json:"commitsByHour"`
+}
+
+type FunStats struct {
+	MostProductiveHour    int            `json:"mostProductiveHour"`
+	MostProductiveDay     string         `json:"mostProductiveDay"`
+	CommitsByHour         map[int]int    `json:"commitsByHour"`
+	CommitsByDayOfWeek    map[string]int `json:"commitsByDayOfWeek"`
+	CommitsByMonth        map[string]int `json:"commitsByMonth"`
+	AverageCommitsPerDay  float64        `json:"averageCommitsPerDay"`
+	LongestCodingStreak   int            `json:"longestCodingStreak"`
+	TotalCommits          int            `json:"totalCommits"`
+	TotalRepositories     int            `json:"totalRepositories"`
+	MostActiveRepo        string         `json:"mostActiveRepo"`
+	MostActiveRepoCommits int            `json:"mostActiveRepoCommits"`
+	WeekendWarriorPercent float64        `json:"weekendWarriorPercent"`
+	NightOwlPercent       float64        `json:"nightOwlPercent"`
+	EarlyBirdPercent      float64        `json:"earlyBirdPercent"`
+}

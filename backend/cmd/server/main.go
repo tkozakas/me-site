@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"me-site/backend/internal/api"
 	"me-site/backend/internal/cache"
@@ -34,6 +35,8 @@ func main() {
 		log.Printf("Warning: initial stats fetch failed: %v", err)
 	}
 
+	go scheduleDailyRefresh(handler)
+
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
@@ -41,6 +44,9 @@ func main() {
 
 	r.Get("/api/stats", handler.GetStats)
 	r.Get("/api/search", handler.Search)
+	r.Get("/api/repositories", handler.GetRepositories)
+	r.Get("/api/repo", handler.GetRepoStats)
+	r.Get("/api/fun", handler.GetFunStats)
 	r.Post("/api/webhook/github", handler.Webhook)
 	r.Get("/health", handler.Health)
 
@@ -68,4 +74,14 @@ func corsMiddleware(next http.Handler) http.Handler {
 
 		next.ServeHTTP(w, r)
 	})
+}
+
+func scheduleDailyRefresh(handler *api.Handler) {
+	ticker := time.NewTicker(24 * time.Hour)
+	for range ticker.C {
+		log.Println("Running scheduled daily refresh...")
+		if err := handler.RefreshStats(); err != nil {
+			log.Printf("Scheduled refresh failed: %v", err)
+		}
+	}
 }

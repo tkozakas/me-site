@@ -10,6 +10,8 @@ import { Languages } from "./Languages";
 import { TopRepos } from "./TopRepos";
 import { SearchBar } from "./SearchBar";
 import { SearchResults } from "./SearchResults";
+import { FunStats } from "./FunStats";
+import { RepositoryList } from "./RepositoryList";
 
 export function Dashboard() {
   const [stats, setStats] = useState<GitHubStats | null>(null);
@@ -91,6 +93,7 @@ export function Dashboard() {
 
         <div className="mt-12 space-y-8">
           <StreakStats streak={stats.streak} />
+          <FunStats />
           <ContributionGraph contributions={stats.contributions} />
 
           <div className="grid gap-8 lg:grid-cols-2">
@@ -127,6 +130,7 @@ export function Dashboard() {
           </div>
 
           <TopRepos repositories={stats.repositories} />
+          <RepositoryList />
         </div>
 
         <footer className="mt-20 border-t border-neutral-900 pt-8 text-center text-sm text-neutral-600">

@@ -15,23 +15,33 @@ func (c *Client) GetProfile() (*Profile, error) {
 }
 
 func (c *Client) GetRepositories() ([]Repository, error) {
-	var repos []Repository
-	if err := c.request(fmt.Sprintf("/users/%s/repos?sort=updated&per_page=100", c.username), &repos); err != nil {
-		return nil, err
-	}
+	var allRepos []Repository
+	page := 1
 
-	var filtered []Repository
-	for _, r := range repos {
-		if !r.Fork && !r.Archived {
-			filtered = append(filtered, r)
+	for {
+		var repos []Repository
+		endpoint := fmt.Sprintf("/users/%s/repos?sort=updated&per_page=100&page=%d", c.username, page)
+		if err := c.request(endpoint, &repos); err != nil {
+			return allRepos, err
 		}
+
+		if len(repos) == 0 {
+			break
+		}
+
+		for _, r := range repos {
+			if !r.Fork && !r.Archived {
+				allRepos = append(allRepos, r)
+			}
+		}
+
+		if len(repos) < 100 {
+			break
+		}
+		page++
 	}
 
-	if len(filtered) > 20 {
-		filtered = filtered[:20]
-	}
-
-	return filtered, nil
+	return allRepos, nil
 }
 
 func (c *Client) GetContributions() ([]ContributionWeek, int, error) {
@@ -107,54 +117,64 @@ func levelToNumber(level string) int {
 	return 0
 }
 
-func (c *Client) GetCommits(repo, branch string, since time.Time) ([]Commit, error) {
-	endpoint := fmt.Sprintf("/repos/%s/%s/commits?per_page=100", c.username, repo)
-	if branch != "" {
-		endpoint += "&sha=" + branch
-	}
-	if !since.IsZero() {
-		endpoint += "&since=" + since.Format(time.RFC3339)
-	}
+func (c *Client) GetCommits(repo, branch string) ([]Commit, error) {
+	var allCommits []Commit
+	page := 1
 
-	var response []struct {
-		SHA    string `json:"sha"`
-		Commit struct {
-			Message string `json:"message"`
-			Author  struct {
-				Name  string `json:"name"`
-				Email string `json:"email"`
-				Date  string `json:"date"`
-			} `json:"author"`
-		} `json:"commit"`
-		HTMLURL string `json:"html_url"`
-	}
-
-	if err := c.request(endpoint, &response); err != nil {
-		return nil, err
-	}
-
-	commits := make([]Commit, len(response))
-	for i, r := range response {
-		date, _ := time.Parse(time.RFC3339, r.Commit.Author.Date)
-		commits[i] = Commit{
-			SHA:     r.SHA,
-			Message: r.Commit.Message,
-			Author:  r.Commit.Author.Name,
-			Email:   r.Commit.Author.Email,
-			Date:    date,
-			URL:     r.HTMLURL,
-			Repo:    repo,
+	for {
+		endpoint := fmt.Sprintf("/repos/%s/%s/commits?per_page=100&page=%d", c.username, repo, page)
+		if branch != "" {
+			endpoint += "&sha=" + branch
 		}
+
+		var response []struct {
+			SHA    string `json:"sha"`
+			Commit struct {
+				Message string `json:"message"`
+				Author  struct {
+					Name  string `json:"name"`
+					Email string `json:"email"`
+					Date  string `json:"date"`
+				} `json:"author"`
+			} `json:"commit"`
+			HTMLURL string `json:"html_url"`
+		}
+
+		if err := c.request(endpoint, &response); err != nil {
+			return allCommits, err
+		}
+
+		if len(response) == 0 {
+			break
+		}
+
+		for _, r := range response {
+			date, _ := time.Parse(time.RFC3339, r.Commit.Author.Date)
+			allCommits = append(allCommits, Commit{
+				SHA:     r.SHA,
+				Message: r.Commit.Message,
+				Author:  r.Commit.Author.Name,
+				Email:   r.Commit.Author.Email,
+				Date:    date,
+				URL:     r.HTMLURL,
+				Repo:    repo,
+			})
+		}
+
+		if len(response) < 100 {
+			break
+		}
+		page++
 	}
 
-	return commits, nil
+	return allCommits, nil
 }
 
-func (c *Client) GetAllCommits(repos []Repository, since time.Time) ([]Commit, error) {
+func (c *Client) GetAllCommits(repos []Repository) ([]Commit, error) {
 	var allCommits []Commit
 
 	for _, repo := range repos {
-		commits, err := c.GetCommits(repo.Name, "", since)
+		commits, err := c.GetCommits(repo.Name, "")
 		if err != nil {
 			continue
 		}

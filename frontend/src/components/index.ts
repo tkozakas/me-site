@@ -7,3 +7,6 @@ export { StreakStats } from "./StreakStats";
 export { SearchBar } from "./SearchBar";
 export { SearchResults } from "./SearchResults";
 export { Dashboard } from "./Dashboard";
+export { FunStats } from "./FunStats";
+export { RepositoryList } from "./RepositoryList";
+export { RepoDetail } from "./RepoDetail";

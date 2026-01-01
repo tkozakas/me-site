@@ -70,3 +70,35 @@ export interface SearchResult {
   count: number;
   results: Commit[];
 }
+
+export interface RepoStats {
+  repository: Repository;
+  commits: Commit[];
+  totalCommits: number;
+  firstCommit: string;
+  lastCommit: string;
+  commitsByDay: Record<string, number>;
+  commitsByHour: Record<number, number>;
+}
+
+export interface FunStats {
+  mostProductiveHour: number;
+  mostProductiveDay: string;
+  commitsByHour: Record<number, number>;
+  commitsByDayOfWeek: Record<string, number>;
+  commitsByMonth: Record<string, number>;
+  averageCommitsPerDay: number;
+  longestCodingStreak: number;
+  totalCommits: number;
+  totalRepositories: number;
+  mostActiveRepo: string;
+  mostActiveRepoCommits: number;
+  weekendWarriorPercent: number;
+  nightOwlPercent: number;
+  earlyBirdPercent: number;
+}
+
+export interface RepositoriesResult {
+  count: number;
+  repositories: Repository[];
+}

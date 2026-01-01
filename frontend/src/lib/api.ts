@@ -1,4 +1,4 @@
-import type { GitHubStats, SearchResult } from "./types";
+import type { GitHubStats, SearchResult, RepositoriesResult, RepoStats, FunStats } from "./types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
@@ -23,6 +23,41 @@ export async function searchCommits(query: string): Promise<SearchResult> {
   const res = await fetch(url.toString());
   if (!res.ok) {
     throw new Error(`Search failed: ${res.statusText}`);
+  }
+
+  return res.json();
+}
+
+export async function getRepositories(query?: string): Promise<RepositoriesResult> {
+  const url = new URL(`${API_URL}/api/repositories`);
+  if (query) {
+    url.searchParams.set("q", query);
+  }
+
+  const res = await fetch(url.toString());
+  if (!res.ok) {
+    throw new Error(`Failed to fetch repositories: ${res.statusText}`);
+  }
+
+  return res.json();
+}
+
+export async function getRepoStats(name: string): Promise<RepoStats> {
+  const url = new URL(`${API_URL}/api/repo`);
+  url.searchParams.set("name", name);
+
+  const res = await fetch(url.toString());
+  if (!res.ok) {
+    throw new Error(`Failed to fetch repo stats: ${res.statusText}`);
+  }
+
+  return res.json();
+}
+
+export async function getFunStats(): Promise<FunStats> {
+  const res = await fetch(`${API_URL}/api/fun`);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch fun stats: ${res.statusText}`);
   }
 
   return res.json();

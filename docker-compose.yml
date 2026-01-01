@@ -23,6 +23,8 @@ services:
   backend:
     <<: *backend
     profiles: ["dev"]
+    ports:
+      - "8080:8080"
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -37,6 +39,8 @@ services:
   frontend:
     <<: *frontend
     profiles: ["dev"]
+    ports:
+      - "3000:80"
     build:
       context: ./frontend
       dockerfile: Dockerfile
