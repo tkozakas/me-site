@@ -79,11 +79,7 @@ func (h *Handler) Callback(w http.ResponseWriter, r *http.Request) {
 		Secure:   r.TLS != nil,
 	})
 
-	frontendURL := h.frontendURL
-	if frontendURL == "" {
-		frontendURL = "https://ghstats.fun"
-	}
-	http.Redirect(w, r, frontendURL+"/"+profile.Login, http.StatusTemporaryRedirect)
+	http.Redirect(w, r, h.frontendURL+"/"+profile.Login, http.StatusTemporaryRedirect)
 }
 
 func (h *Handler) exchangeCode(code string) (*github.OAuthTokenResponse, error) {
