@@ -20,6 +20,15 @@ interface DashboardProps {
 
 type Visibility = "public" | "private" | "all";
 
+function extractCountryFromLocation(location: string): string | null {
+  const parts = location.split(",").map((p) => p.trim());
+  const lastPart = parts[parts.length - 1];
+  if (lastPart && lastPart.length > 1) {
+    return lastPart;
+  }
+  return parts[0] || null;
+}
+
 export function Dashboard({ username }: DashboardProps) {
   const [stats, setStats] = useState<GitHubStats | null>(null);
   const [ranking, setRanking] = useState<UserRanking | null>(null);
@@ -54,14 +63,19 @@ export function Dashboard({ username }: DashboardProps) {
   }, [fetchStats]);
 
   useEffect(() => {
-    getUserRanking(username)
+    if (!stats?.profile.location) return;
+    
+    const country = extractCountryFromLocation(stats.profile.location);
+    if (!country) return;
+
+    getUserRanking(username, country)
       .then((result) => {
         if (result.found && result.ranking) {
           setRanking(result.ranking);
         }
       })
       .catch(() => {});
-  }, [username]);
+  }, [username, stats?.profile.location]);
 
   if (loading && !stats) {
     return (
