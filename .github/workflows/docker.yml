@@ -76,7 +76,7 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY }}/${{ github.repository }}-frontend:${{ matrix.tag }}
           build-args: |
-            NEXT_PUBLIC_API_URL=/api
+            NEXT_PUBLIC_API_URL=
           provenance: false
 
   manifest-backend:
