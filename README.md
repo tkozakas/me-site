@@ -22,5 +22,5 @@ docker compose --profile dev up
 ## Production
 
 ```bash
-docker compose --profile prod --profile tunnel up -d
+docker compose --profile prod up -d
 ```
