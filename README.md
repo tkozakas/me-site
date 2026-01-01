@@ -19,5 +19,5 @@ GITHUB_TOKEN=xxx docker compose --profile dev up --build
 GITHUB_TOKEN=xxx DOMAIN=example.com docker compose --profile prod up -d
 ```
 
-Frontend: http://localhost:3000  
+Frontend: http://localhost:3000
 Backend: http://localhost:8080
