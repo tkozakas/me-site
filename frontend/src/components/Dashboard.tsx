@@ -40,6 +40,7 @@ export function Dashboard({ username }: DashboardProps) {
   const [visibility, setVisibility] = useState<Visibility>("public");
   const [modal, setModal] = useState<"followers" | "following" | null>(null);
   const reposRef = useRef<HTMLDivElement>(null);
+  const hasLoadedRef = useRef(false);
   const { auth, login, logout } = useAuth();
   const router = useRouter();
 
@@ -55,7 +56,7 @@ export function Dashboard({ username }: DashboardProps) {
 
   const fetchStats = useCallback(async () => {
     try {
-      if (stats) {
+      if (hasLoadedRef.current) {
         setRefetching(true);
       } else {
         setLoading(true);
@@ -67,6 +68,7 @@ export function Dashboard({ username }: DashboardProps) {
       );
       setStats(data);
       setError(null);
+      hasLoadedRef.current = true;
 
       if (selectedLanguage && !data.languages.some(l => l.name === selectedLanguage)) {
         setSelectedLanguage(null);
