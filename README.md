@@ -1,6 +1,6 @@
 # GitHub Stats
 
-GitHub analytics dashboard. [ghstats.fun](https://ghstats.fun)
+GitHub analytics dashboard with contribution streaks, language stats, and country rankings. [ghstats.fun](https://ghstats.fun)
 
 ![Preview](./demo.png)
 
