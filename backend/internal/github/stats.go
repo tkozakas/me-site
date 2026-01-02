@@ -2,6 +2,7 @@ package github
 
 import (
 	"fmt"
+	"log"
 	"net/url"
 	"sort"
 	"sync"
@@ -128,12 +129,12 @@ func (c *Client) GetContributions(username string) ([]ContributionWeek, int, err
 func (c *Client) GetContributionsForYear(username string, year int) ([]ContributionWeek, int, error) {
 	var dateRange string
 	if year > 0 {
-		dateRange = fmt.Sprintf(`from: "%d-01-01T00:00:00Z", to: "%d-12-31T23:59:59Z"`, year, year)
+		dateRange = fmt.Sprintf(`(from: "%d-01-01T00:00:00Z", to: "%d-12-31T23:59:59Z")`, year, year)
 	}
 
 	query := fmt.Sprintf(`{
 		user(login: "%s") {
-			contributionsCollection(%s) {
+			contributionsCollection%s {
 				contributionCalendar {
 					totalContributions
 					weeks {
@@ -343,7 +344,7 @@ func (c *Client) GetStatsWithVisibility(username string, visibility string) (*St
 
 	contributions, total, err := c.GetContributions(username)
 	if err != nil {
-		// GraphQL requires auth - gracefully degrade for unauthenticated requests
+		log.Printf("get contributions error for %s: %v", username, err)
 		contributions = []ContributionWeek{}
 		total = 0
 	}

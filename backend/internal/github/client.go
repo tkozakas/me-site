@@ -119,7 +119,21 @@ func (c *Client) graphqlWithVars(query string, variables map[string]any, result 
 		return fmt.Errorf("GitHub GraphQL error %d: %s", resp.StatusCode, string(respBody))
 	}
 
-	return json.NewDecoder(resp.Body).Decode(result)
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	var graphqlResponse struct {
+		Errors []struct {
+			Message string `json:"message"`
+		} `json:"errors"`
+	}
+	if err := json.Unmarshal(respBody, &graphqlResponse); err == nil && len(graphqlResponse.Errors) > 0 {
+		return fmt.Errorf("GraphQL error: %s", graphqlResponse.Errors[0].Message)
+	}
+
+	return json.Unmarshal(respBody, result)
 }
 
 type jsonReaderType []byte
