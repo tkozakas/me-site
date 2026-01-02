@@ -129,7 +129,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Watchtower
-        if: ${{ secrets.WATCHTOWER_TOKEN != '' }}
+        env:
+          WATCHTOWER_TOKEN: ${{ secrets.WATCHTOWER_TOKEN }}
+        if: env.WATCHTOWER_TOKEN != ''
         run: |
           curl -sf -H "Authorization: Bearer ${{ secrets.WATCHTOWER_TOKEN }}" \
             https://ghstats.fun/watchtower/v1/update
