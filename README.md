@@ -4,6 +4,18 @@ GitHub analytics dashboard. [ghstats.fun](https://ghstats.fun)
 
 ![Preview](./demo.png)
 
+## What GitHub doesn't show
+
+- Contribution streaks (current and longest)
+- Language usage across all repositories
+- Commits from all repositories in one list
+- Country rankings by contributions
+- Everything on one page
+
+## Data Source
+
+All data comes from the GitHub API.
+
 ## Setup
 
 Create `.env` with GitHub credentials:
