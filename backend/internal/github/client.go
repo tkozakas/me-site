@@ -74,6 +74,10 @@ func (c *Client) request(endpoint string, result any) error {
 		return fmt.Errorf("not found")
 	}
 
+	if resp.StatusCode == http.StatusAccepted {
+		return fmt.Errorf("accepted: stats being computed")
+	}
+
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
 		return fmt.Errorf("GitHub API error %d: %s", resp.StatusCode, string(body))
