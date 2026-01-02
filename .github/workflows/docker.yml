@@ -122,3 +122,13 @@ jobs:
           docker buildx imagetools create -t ${{ env.REGISTRY }}/${{ github.repository }}-frontend:main \
             ${{ env.REGISTRY }}/${{ github.repository }}-frontend:linux-amd64 \
             ${{ env.REGISTRY }}/${{ github.repository }}-frontend:linux-arm64
+
+  deploy:
+    name: Trigger Deploy
+    needs: [manifest-backend, manifest-frontend]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Watchtower
+        run: |
+          curl -sf -H "Authorization: Bearer ${{ secrets.WATCHTOWER_TOKEN }}" \
+            https://ghstats.fun/watchtower/v1/update

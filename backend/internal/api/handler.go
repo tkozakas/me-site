@@ -311,8 +311,14 @@ func (h *Handler) GetUserFunStats(w http.ResponseWriter, r *http.Request) {
 		visibility = "public"
 	}
 
+	client := h.getClientForUser(r, username)
 	session := h.getSession(r)
 	isOwnProfile := session != nil && strings.EqualFold(session.Username, username)
+
+	if (visibility == "private" || visibility == "all") && !isOwnProfile {
+		http.Error(w, "private visibility only available for your own profile", http.StatusForbidden)
+		return
+	}
 
 	cacheKey := username + ":" + visibility
 	if isOwnProfile {
@@ -322,15 +328,38 @@ func (h *Handler) GetUserFunStats(w http.ResponseWriter, r *http.Request) {
 	stats := h.store.GetStats(cacheKey)
 	commits := h.store.GetCommits(cacheKey)
 
-	if stats == nil {
+	if stats == nil && isOwnProfile {
 		fallbackKey := username + ":public"
 		stats = h.store.GetStats(fallbackKey)
 		commits = h.store.GetCommits(fallbackKey)
 	}
 
 	if stats == nil {
-		http.Error(w, "stats not available, fetch user stats first", http.StatusServiceUnavailable)
-		return
+		var err error
+		stats, err = client.GetStatsWithVisibility(username, visibility)
+		if err != nil {
+			log.Printf("get stats error for %s: %v", username, err)
+			if strings.Contains(err.Error(), "not found") {
+				http.Error(w, "user not found", http.StatusNotFound)
+				return
+			}
+			if strings.Contains(err.Error(), "403") {
+				h.writeRateLimitError(w)
+				return
+			}
+			http.Error(w, "failed to fetch stats", http.StatusInternalServerError)
+			return
+		}
+		h.store.SetStats(cacheKey, stats)
+
+		commits, err = client.GetAllCommits(username, stats.Repositories)
+		if err != nil {
+			log.Printf("Warning: failed to fetch commits for %s: %v", username, err)
+			commits = []github.Commit{}
+		} else {
+			h.store.SetCommits(cacheKey, commits)
+			log.Printf("Fetched %d commits for %s (fun stats)", len(commits), username)
+		}
 	}
 
 	if commits == nil {
