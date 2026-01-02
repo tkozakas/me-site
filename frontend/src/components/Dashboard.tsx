@@ -296,6 +296,7 @@ export function Dashboard({ username }: DashboardProps) {
                     contributions={stats.contributions} 
                     username={username}
                     totalContributions={stats.streak.totalContributions}
+                    createdAt={stats.profile.created_at}
                   />
                 </div>
               )}

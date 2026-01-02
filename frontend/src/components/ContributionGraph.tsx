@@ -8,6 +8,7 @@ interface ContributionGraphProps {
   contributions: ContributionWeek[];
   username: string;
   totalContributions?: number;
+  createdAt?: string;
 }
 
 const levelColors = [
@@ -22,14 +23,20 @@ export function ContributionGraph({
   contributions: initialContributions,
   username,
   totalContributions: initialTotal,
+  createdAt,
 }: ContributionGraphProps) {
   const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: currentYear - 2007 }, (_, i) => currentYear - i);
+  const startYear = createdAt ? new Date(createdAt).getFullYear() : 2008;
+  const years = Array.from(
+    { length: currentYear - startYear + 1 },
+    (_, i) => currentYear - i
+  );
 
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [contributions, setContributions] = useState(initialContributions);
   const [totalContributions, setTotalContributions] = useState(initialTotal ?? 0);
   const [loading, setLoading] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (selectedYear === null) {
@@ -52,6 +59,17 @@ export function ContributionGraph({
       });
   }, [selectedYear, username, initialContributions, initialTotal]);
 
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest("[data-dropdown]")) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
   if (!contributions?.length && !loading) return null;
 
   const recentWeeks = contributions.slice(-52);
@@ -69,20 +87,51 @@ export function ContributionGraph({
             </span>
           )}
         </div>
-        <select
-          value={selectedYear ?? ""}
-          onChange={(e) =>
-            setSelectedYear(e.target.value ? Number(e.target.value) : null)
-          }
-          className="rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-1.5 text-sm text-neutral-200 outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600"
-        >
-          <option value="">Last 12 months</option>
-          {years.map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ))}
-        </select>
+        <div className="relative" data-dropdown>
+          <button
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            className="flex items-center gap-2 rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-1.5 text-sm text-neutral-200 transition-colors hover:border-neutral-600"
+          >
+            <span>{selectedYear ?? "Last 12 months"}</span>
+            <svg
+              className={`h-4 w-4 text-neutral-500 transition-transform ${dropdownOpen ? "rotate-180" : ""}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {dropdownOpen && (
+            <div className="absolute right-0 z-50 mt-2 max-h-64 w-40 overflow-y-auto rounded-lg border border-neutral-700 bg-neutral-800">
+              <button
+                onClick={() => {
+                  setSelectedYear(null);
+                  setDropdownOpen(false);
+                }}
+                className={`w-full px-3 py-2 text-left text-sm transition-colors hover:bg-neutral-700 ${
+                  selectedYear === null ? "bg-neutral-700 text-emerald-400" : "text-neutral-200"
+                }`}
+              >
+                Last 12 months
+              </button>
+              {years.map((year) => (
+                <button
+                  key={year}
+                  onClick={() => {
+                    setSelectedYear(year);
+                    setDropdownOpen(false);
+                  }}
+                  className={`w-full px-3 py-2 text-left text-sm transition-colors hover:bg-neutral-700 ${
+                    selectedYear === year ? "bg-neutral-700 text-emerald-400" : "text-neutral-200"
+                  }`}
+                >
+                  {year}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {loading ? (

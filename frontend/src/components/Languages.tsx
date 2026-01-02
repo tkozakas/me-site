@@ -32,8 +32,8 @@ export function Languages({
           </button>
         )}
       </div>
-      <div className="mb-4 flex h-4 overflow-hidden rounded-full">
-        {languages.map((lang) => (
+      <div className="mb-4 flex h-4">
+        {languages.map((lang, index) => (
           <div
             key={lang.name}
             onClick={() => handleClick(lang.name)}
@@ -41,7 +41,7 @@ export function Languages({
               selectedLanguage && selectedLanguage !== lang.name
                 ? "opacity-30"
                 : "hover:opacity-80"
-            }`}
+            } ${index === 0 ? "rounded-l-full" : ""} ${index === languages.length - 1 ? "rounded-r-full" : ""}`}
             style={{
               width: `${lang.percentage}%`,
               backgroundColor: lang.color,
