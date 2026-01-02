@@ -27,7 +27,3 @@ GITHUB_CLIENT_SECRET=xxx
 docker compose --profile dev up   # development
 docker compose --profile prod up  # production
 ```
-
-## License
-
-MIT
