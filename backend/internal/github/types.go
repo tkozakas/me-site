@@ -88,6 +88,7 @@ type FunStats struct {
 	CommitsByMonth        map[string]int     `json:"commitsByMonth"`
 	AvgCommitsByHour      map[int]float64    `json:"avgCommitsByHour"`
 	AvgCommitsByDayOfWeek map[string]float64 `json:"avgCommitsByDayOfWeek"`
+	AvgCommitsByMonth     map[string]float64 `json:"avgCommitsByMonth"`
 	AverageCommitsPerDay  float64            `json:"averageCommitsPerDay"`
 	LongestCodingStreak   int                `json:"longestCodingStreak"`
 	TotalCommits          int                `json:"totalCommits"`

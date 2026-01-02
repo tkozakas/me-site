@@ -476,6 +476,15 @@ func (h *Handler) GetUserFunStats(w http.ResponseWriter, r *http.Request) {
 		avgCommitsByDayOfWeek[day] = float64(count) / numWeeks
 	}
 
+	numMonths := float64(len(commitsByMonth))
+	if numMonths < 1 {
+		numMonths = 1
+	}
+	avgCommitsByMonth := make(map[string]float64)
+	for month, count := range commitsByMonth {
+		avgCommitsByMonth[month] = float64(count) / numMonths
+	}
+
 	total := float64(len(filteredCommits))
 	weekendPercent := 0.0
 	nightPercent := 0.0
@@ -496,6 +505,7 @@ func (h *Handler) GetUserFunStats(w http.ResponseWriter, r *http.Request) {
 		CommitsByMonth:        commitsByMonth,
 		AvgCommitsByHour:      avgCommitsByHour,
 		AvgCommitsByDayOfWeek: avgCommitsByDayOfWeek,
+		AvgCommitsByMonth:     avgCommitsByMonth,
 		AverageCommitsPerDay:  avgCommitsPerDay,
 		LongestCodingStreak:   longestStreak,
 		TotalCommits:          len(filteredCommits),

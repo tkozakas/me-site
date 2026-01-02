@@ -12,7 +12,7 @@ import { ContributionGraph } from "./ContributionGraph";
 import { Languages } from "./Languages";
 import { TopRepos } from "./TopRepos";
 import { FunStats } from "./FunStats";
-import { RepositoryList } from "./RepositoryList";
+import { RepositoryList, RepositoryListSkeleton } from "./RepositoryList";
 import { UserListModal } from "./UserListModal";
 
 interface DashboardProps {
@@ -378,7 +378,17 @@ export function Dashboard({ username }: DashboardProps) {
               )}
 
               <div ref={reposRef}>
-                <RepositoryList username={username} visibility={isOwnProfile ? visibility : "public"} />
+                {!stats ? (
+                  <RepositoryListSkeleton />
+                ) : (
+                  <div className="relative">
+                    {loading && <RefetchingOverlay />}
+                    <RepositoryList 
+                      username={username} 
+                      repositories={stats.repositories}
+                    />
+                  </div>
+                )}
               </div>
             </div>
 

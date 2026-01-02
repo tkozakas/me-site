@@ -6,6 +6,6 @@ export { RecentCommits } from "./RecentCommits";
 export { StreakStats } from "./StreakStats";
 export { Dashboard } from "./Dashboard";
 export { FunStats } from "./FunStats";
-export { RepositoryList } from "./RepositoryList";
+export { RepositoryList, RepositoryListSkeleton } from "./RepositoryList";
 export { RepoDetail } from "./RepoDetail";
 export { UserListModal } from "./UserListModal";

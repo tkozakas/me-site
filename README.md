@@ -10,7 +10,6 @@ GitHub analytics dashboard. [ghstats.fun](https://ghstats.fun)
 - Language usage across all repositories
 - Commits from all repositories in one list
 - Country rankings by contributions
-- Everything on one page
 
 ## Data Source
 
