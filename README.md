@@ -2,32 +2,32 @@
 
 GitHub analytics dashboard with contribution streaks, language stats, and country rankings. [ghstats.fun](https://ghstats.fun)
 
-![Preview](./demo.png)
+![](./demo.png)
 
-## What GitHub doesn't show
+## Features
 
 - Contribution streaks (current and longest)
 - Language usage across all repositories
-- Commits from all repositories in one list
+- Recent commits from all repositories
 - Country rankings by contributions
-
-## Data Source
-
-All data comes from the GitHub API.
 
 ## Setup
 
 Create `.env` with GitHub credentials:
 
 ```bash
-GITHUB_TOKEN=xxx              # Personal access token from https://github.com/settings/tokens
-GITHUB_CLIENT_ID=xxx          # OAuth app from https://github.com/settings/developers
+GITHUB_TOKEN=xxx              # https://github.com/settings/tokens
+GITHUB_CLIENT_ID=xxx          # https://github.com/settings/developers
 GITHUB_CLIENT_SECRET=xxx
 ```
 
-## Run
+## Usage
 
 ```bash
 docker compose --profile dev up   # development
 docker compose --profile prod up  # production
 ```
+
+## License
+
+MIT
